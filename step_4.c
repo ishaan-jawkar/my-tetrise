@@ -48,7 +48,7 @@ int main()
     {
         if(tetromeinoes[i][j]==1)
         {
-       int cur_x=Xco+j;// to cheak if the x co-ordinat is inside the box or not
+       int cur_x=Xco+j;
        int cur_y=Yco+i;
 
     if(cur_x>=0&&cur_x<column&&cur_y<row&&cur_y>=0)
