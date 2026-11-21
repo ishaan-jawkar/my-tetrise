@@ -302,7 +302,7 @@ int main()
             game_over=0;
         }
         }
-           Sleep(100);
+           Sleep(200);
     }
          printf("======game over======\n");
          printf("enter your name\n");
