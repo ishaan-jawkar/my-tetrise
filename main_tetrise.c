@@ -5,15 +5,14 @@
 #include <time.h>
 #define row 20
 #define column 10 
-//gcc step8f.c -o step8f
-//./step8f
-struct GameRecord
+//gcc main_tetrise.c -o main_tetrise
+//./main_tetrise 
+struct GameRecord // for recording player score
 {
      char name[30];
      int score;
      int rank;
 };
-
 char **boxes_grid;
 void make_boxes(){// to make the base grid
    for(int i=0;i<row;i++)
@@ -24,8 +23,7 @@ void make_boxes(){// to make the base grid
     }
    }
 }
-const char tetromeinoes[7][4][4]={
-
+const char tetromeinoes[7][4][4]={// to create different type of falling block
     {
     //i-block_1
     {0,1,0,0},
@@ -67,7 +65,7 @@ const char tetromeinoes[7][4][4]={
     {0,0,0,0},
     {0,0,0,0}, }
 };
-void  bubblesorting(struct GameRecord p[],int n)
+void  bubblesorting(struct GameRecord p[],int n)// to rank player by score
 {
     struct GameRecord temp;
     {
@@ -85,8 +83,8 @@ void  bubblesorting(struct GameRecord p[],int n)
     }
 }
 }
-int cheak_collision(int x_tar, int y_tar, char piece[4][4]){
-
+int cheak_collision(int x_tar, int y_tar, char piece[4][4]){//to cheak if the block touched side of board and don't fall out the boundry
+                                                             //also to cheak if it toucher another block
     for(int i = 0; i < 4; i++)
     {
         for(int j = 0; j < 4; j++)
@@ -100,14 +98,14 @@ int cheak_collision(int x_tar, int y_tar, char piece[4][4]){
                 {
                  return 1;
             }
-              if(boxes_grid[box_y][box_x]=='@')
+              if(boxes_grid[box_y][box_x]=='#')
                    { return 1;}
                 }
         }
     }
     return 0;
 }
-void rotate(char piece[4][4]){
+void rotate(char piece[4][4]){//used for turning the piece 90 degree to give more mobility to piece 
  char temp[4][4];
     for(int i=0;i<4;i++)
     {
@@ -124,8 +122,7 @@ void rotate(char piece[4][4]){
     }
 }
 }
-void input(int *xco,int *yco,char curr_piece[4][4]){
-
+void input(int *xco,int *yco,char curr_piece[4][4]){// fot input (dont use scanf as it wait for the user input pause the program) 
        if(_kbhit())
         {
             char ch=_getch();
@@ -159,18 +156,16 @@ void input(int *xco,int *yco,char curr_piece[4][4]){
                      {
                      rotate(curr_piece);
                       }
-        
                }
-        }
+            }
 }
-void clear_line(char **boxes_grid,int *score){
-
+void clear_line(char **boxes_grid,int *score){//to cheak if the row is full and then increase the score  
     for(int i=row-1;i>=0;i--)
     {
         int is_full=1;
         for(int j=0;j<column;j++)
     {
-        if(boxes_grid[i][j]!='@')
+        if(boxes_grid[i][j]!='#')
         {
             is_full=0;
         }
@@ -186,28 +181,30 @@ void clear_line(char **boxes_grid,int *score){
         }
             for(int j=0;j<column;j++)
         {
-            boxes_grid[0][j]='.';
-            
+            boxes_grid[0][j]='.'; 
         }
-        
         i++;
     }
-    
 }
 }
 int main()
 { 
     int pl=1;
-    struct GameRecord *p = (struct GameRecord*)calloc(pl, sizeof(struct GameRecord));
+    struct GameRecord *p = (struct GameRecord*)calloc(pl, sizeof(struct GameRecord));//to allocate memory
    
+    
     boxes_grid = (char**)calloc(row,sizeof(char*));
+    if (p == NULL) {
+    printf("Memory allocation failed!\n");
+    return 1;
+    }
     for(int i=0;i<row;i++)
     {
         boxes_grid[i] = (char*)calloc(column,sizeof(char));
     }
     
     srand(time(NULL));
-    while(1)
+    while(1)//to start the first loop
 {
     int score=0;
     int xco=3;//starting position
@@ -215,21 +212,20 @@ int main()
     int game_over=1; 
      int speed=10;
     int frame=0; 
-        make_boxes();
+        make_boxes();//first make empty boxes
 
-        int shape = rand() % 7;
+        int shape = rand() % 7;//to randomonize the piece
         char curr_piece[4][4];
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
-                curr_piece[i][j] = tetromeinoes[shape][i][j];
+                curr_piece[i][j] = tetromeinoes[shape][i][j];//as the tetro..... is constant
             }
         }
-
-    while(game_over!=0)
+    while(game_over!=0)//second inner loop fo rthe actual game
     {
         input(&xco, &yco,  curr_piece);
 
-        system("cls");
+        system("cls");//to make sure that is nothing except the game
         printf("A or a=left\n");
         printf("D ot d=right\n");
         printf("S or s=down\n");
@@ -240,9 +236,9 @@ int main()
             for(int j=0;j<column;j++)
             {
                 int cur_x=i-yco ,cur_y=j-xco;
-                if(boxes_grid[i][j]=='@'||(cur_x>=0&&cur_y>=0&&cur_x<4&&cur_y<4&&curr_piece[cur_x][cur_y]==1))
+                if(boxes_grid[i][j]=='#'||(cur_x>=0&&cur_y>=0&&cur_x<4&&cur_y<4&&curr_piece[cur_x][cur_y]==1))
                 {
-                    printf("@");
+                    printf("#");
                 }
                 else 
                 {
@@ -251,7 +247,6 @@ int main()
             }
             printf("\n");
         }
-
         frame++;
         if(frame>=speed)
         {
@@ -271,64 +266,66 @@ int main()
              {
                 int cur_x=xco+j;
                 int cur_y=yco+i;
-                if(cur_x>=0&&cur_y>=0&&cur_x<column&&cur_y<row)
+                if(cur_x>=0&&cur_y>=0&&cur_x<column&&cur_y<row)//if inside the game border
                 {
-                    boxes_grid[cur_y][cur_x]='@';
+                    boxes_grid[cur_y][cur_x]='#';
                 }
             }
              }
             }
-        
-            clear_line(boxes_grid,&score);
+            clear_line(boxes_grid,&score);//if line is full
              speed=10-score/500;
              if(speed<2)
              {
                 speed=2;
              }
-     
             yco=0;
             xco=3;
-            shape=rand() % 7;
+            shape=rand() % 7;//re randominize the piece
             for(int i=0;i<4;i++)
                 {
                     for(int j=0;j<4;j++)
                     {
-                        curr_piece[i][j]=tetromeinoes[shape][i][j];
+                        curr_piece[i][j]=tetromeinoes[shape][i][j];// to put that re randomize piece for cheaking
                     }
                 }
-        
         if(cheak_collision(xco,yco,curr_piece)==1)
         {
             game_over=0;
         }
         }
-           Sleep(100);
-    }
+           Sleep(450);//so that the piece does not instantly come down
+    }//end of the inner loop  as the game is over 
          printf("======game over======\n");
          printf("enter your name\n");
             scanf("%s",p[pl-1].name);
             p[pl-1].score=score;
          char select;
-         printf("\npress E or e to try again or ");//for user to decide to quit or start again
-         printf("press Q or q to end the program");
+         printf("\npress E or e to try again \n ");//for user to decide to quit or start again
+         printf("press Q or q to end the program\n");
          scanf(" %c",&select);
-         if(select=='E'||select=='e')
+         if(select=='E'||select=='e')// game ends 
          {
-            break;
-         }
-         else if(select=='Q'||select=='q')
-        {
-           pl++;
+            pl++;
            p=(struct GameRecord*)realloc(p,pl*sizeof(struct GameRecord));
+           if ( p== NULL)
+            {
+        printf("Reallocation failed!\n");
+        return 1;
+             }
+            } 
+         else if(select=='Q'||select=='q')//game start again
+        {
+          break;
         }
         else
         {
-            printf("invaild input,end game");
+            printf("invaild input,end game");//game end if anything other than q,e is put
             break;
         }
  
     }
-    if(pl>0)
+    if(pl>0)//to insure that number of play is more that 0
     {
     printf("\n---leaderboard---\n");
     bubblesorting(p,pl);
@@ -337,12 +334,11 @@ int main()
       printf("\n name:%s||score:%d||rank:%d\n",p[i].name,p[i].score,i+1);
     }
 }
-free(p);
-for(int i=0;i<row;i++)
+free(p);//remove  the memory stored in p,struct
+for(int i=0;i<row;i++)//remove the value stored in box /game boundry
 {
     free(boxes_grid[i]);
 }
 free(boxes_grid);
-
-    return 0;
+    return 0;//end program
 }
