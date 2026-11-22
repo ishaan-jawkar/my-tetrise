@@ -141,6 +141,11 @@ void input(int *xco,int *yco,char curr_piece[4][4]){// fot input (dont use scanf
                 if(cheak_collision((*xco)+1,(*yco),curr_piece)==0)
                 {(*xco)++;}
             }
+            if(ch=='e'||ch=='E')
+            {
+                while(cheak_collision((*xco),(*yco)+1,curr_piece)==0)
+                {(*yco)++;}
+            }
            else if(ch == 'w' || ch == 'W')
            {
                 char temp[4][4];
@@ -300,6 +305,7 @@ int main()
          printf("enter your name\n");
             scanf("%s",p[pl-1].name);
             p[pl-1].score=score;
+            printf("your score is:%d",p[pl-1].score);
          char select;
          printf("\npress E or e to try again \n ");//for user to decide to quit or start again
          printf("press Q or q to end the program\n");
