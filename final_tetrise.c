@@ -107,20 +107,20 @@ int cheak_collision(int x_tar, int y_tar, char piece[4][4]){//to cheak if the bl
 }
 void rotate(char piece[4][4]){//used for turning the piece 90 degree to give more mobility to piece 
  char temp[4][4];
-    for(int i=0;i<4;i++)
+    for(int i = 0; i < 4; i++)
     {
-        for(int j=0;j<4;j++)
+        for(int j = 0; j < 4; j++)
         {
-          temp[i][j]=piece[i][j];
+             temp[j][i] = piece[i][j]; // Transpose
         }
     }
-    for(int i=0;i<4;i++)
+    for(int i = 0; i < 4; i++)
     {
-    for(int j=0;j<4;j++)
-    {
-    piece[j][3-i] = temp[i][j];
+        for(int j = 0; j < 4; j++)
+        {
+            piece[i][j] = temp[i][3 - j]; // Reverse rows
+        }
     }
-}
 }
 void input(int *xco,int *yco,char curr_piece[4][4]){// fot input (dont use scanf as it wait for the user input pause the program) 
        if(_kbhit())
@@ -256,9 +256,10 @@ int main()
 
         system("cls");//to make sure that is nothing except the game
         printf("A or a=left\n");
-        printf("D ot d=right\n");
+        printf("D or d=right\n");
         printf("S or s=down\n");
-        printf("W ot w=rotate\n");
+        printf("W or w=rotate\n");
+        printf("E or e=to drop down instantly");
         
         for(int i=0;i<row;i++)/*to print the game box*/
         {
