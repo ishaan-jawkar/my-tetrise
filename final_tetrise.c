@@ -259,7 +259,7 @@ int main()
         printf("D or d=right\n");
         printf("S or s=down\n");
         printf("W or w=rotate\n");
-        printf("E or e=to drop down instantly");
+        printf("E or e=to drop down instantly\n");
         
         for(int i=0;i<row;i++)/*to print the game box*/
         {
@@ -327,7 +327,7 @@ int main()
            Sleep(450);//so that the piece does not instantly come down
     }//end of the inner loop  as the game is over 
          printf("======game over======\n");
-         printf("enter your name\n");
+         printf("enter your name(dont put space)\n");
             scanf("%29s",p[curr_player].name);
             p[curr_player].score=score;
             printf("your score is:%d",p[curr_player].score);
